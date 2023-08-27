@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useActionData, useNavigate, useNavigation, useRouteError, useSubmit } from "react-router-dom";
 import { httpService } from "../../../core/http-service";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 const Register = () => {
   const {
     register,
@@ -10,6 +11,8 @@ const Register = () => {
     watch,
     formState: { errors },
   } = useForm();
+
+  const {t} = useTranslation()
 
   const submitForm = useSubmit()
 
@@ -125,7 +128,8 @@ const Register = () => {
               </div>
               <div className="text-center mt-3">
                 <button type="submit" disabled={isSubmitting} className="btn btn-lg btn-primary">
-                    {isSubmitting ? 'در حال انجام عملیات' : 'ثبت نام'}
+                    {t('register.register')}
+                    {/* {isSubmitting ? 'در حال انجام عملیات' : 'ثبت نام'} */}
                 </button>
               </div>
               {isSuccessOperation && (
