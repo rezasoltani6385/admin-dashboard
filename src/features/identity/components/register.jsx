@@ -1,6 +1,8 @@
 import logo from "@assets/images/logo.svg";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useActionData, useNavigate, useNavigation, useRouteError, useSubmit } from "react-router-dom";
+import { httpService } from "../../../core/http-service";
+import { useEffect } from "react";
 const Register = () => {
   const {
     register,
@@ -8,7 +10,32 @@ const Register = () => {
     watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+
+  const submitForm = useSubmit()
+
+  const onSubmit = (data) => {
+    // delete confirmPassword from data
+    const {confirmPassword, ...userData} = data
+    submitForm(userData, {method: 'post'})
+  };
+
+  const navigation = useNavigation()
+  const isSubmitting = navigation.state !== 'idle'
+
+  const isSuccessOperation = useActionData()
+
+  const navigate = useNavigate()
+
+  const routeError = useRouteError()
+
+  useEffect(()=>{
+    if (isSuccessOperation) {
+      setTimeout(()=>{
+        navigate('/login')
+      }, 2000)
+    }
+  }, [isSuccessOperation])
+
   return (
     <>
       <div className="text-center mt-4">
@@ -20,7 +47,7 @@ const Register = () => {
         <p className="lead">
           قبلا ثبت نام کرده اید؟
           <Link to="/login" className="me-2">
-            وارد کنید{" "}
+            وارد شوید{" "}
           </Link>
         </p>
       </div>
@@ -97,10 +124,24 @@ const Register = () => {
                   )}
               </div>
               <div className="text-center mt-3">
-                <button type="submit" className="btn btn-lg btn-primary">
-                  ثبت نام کنید
+                <button type="submit" disabled={isSubmitting} className="btn btn-lg btn-primary">
+                    {isSubmitting ? 'در حال انجام عملیات' : 'ثبت نام'}
                 </button>
               </div>
+              {isSuccessOperation && (
+                <div className="alert alert-success text-success p-2 mt-3">
+                  عملیات با موفقیت انجام شد؛ به صفحه ورود منتقل می‌شوید
+                </div>
+              )}
+              {
+                routeError && (
+                  <div className="alert alert-danger text-danger p-2 mt-3">
+                    {
+                      routeError.response?.data.map((error) => <p className="mb-0">{error.description}</p>)
+                    }
+                  </div>
+                )
+              }
             </form>
           </div>
         </div>
@@ -110,3 +151,11 @@ const Register = () => {
 };
 
 export default Register;
+
+
+export async function registerAction ({request}){
+  const formData = await request.formData()
+  const data = Object.fromEntries(formData)
+  const response = await httpService.post('/Users', data)
+  return response.status === 200
+}
