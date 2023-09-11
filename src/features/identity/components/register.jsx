@@ -1,7 +1,7 @@
 import logo from "@assets/images/logo.svg";
 import { useForm } from "react-hook-form";
 import { Link, useActionData, useNavigate, useNavigation, useRouteError, useSubmit } from "react-router-dom";
-import { httpService } from "../../../core/http-service";
+import { httpService } from "@core/http-service";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 const Register = () => {
@@ -17,7 +17,7 @@ const Register = () => {
   const submitForm = useSubmit()
 
   const onSubmit = (data) => {
-    // delete confirmPassword from data
+    //Rest operator to delete confirmPassword from data
     const {confirmPassword, ...userData} = data
     submitForm(userData, {method: 'post'})
   };
