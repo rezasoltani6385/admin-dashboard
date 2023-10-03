@@ -6,7 +6,7 @@ const CourseList = ({courses}) => {
             <div className="row">
                 {
                     courses.map((course)=>(
-                        <div className="'col-3" key={course.id}>
+                        <div className="col-3" key={course.id}>
                             <Course {...course} />
                         </div>
                     ))
