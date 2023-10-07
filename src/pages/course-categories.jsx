@@ -36,7 +36,8 @@ export async function categoriesLoader ({request}) {
 
 const loadCategories = async (request)=> {
     const page = new URL(request.url).searchParams.get('page') || 1
-    const pageSize = 5
+    const pageSize = import.meta.env.VITE_PAGE_SIZE
+    // const pageSize = 5
     let url = '/CourseCategory/sieve'
 
     url += `?page=${page}&pageSize=${pageSize}`
