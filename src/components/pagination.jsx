@@ -5,6 +5,7 @@ const Pagination = ({ totalRecords = 8, pageSize = 5 }) => {
   console.log(totalRecords)
   const [searchParams, setSearchParams] = useSearchParams();
 
+// Plus in  "+searchParams.get('page')" convert string to number
   const currentPage = +searchParams.get('page') || 1;
 
   const prevPage = () => {
