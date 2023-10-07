@@ -1,7 +1,7 @@
 import { useAppContext } from "../../contexts/app/app-context";
 import logo from "@assets/images/logo.svg";
 import { useTranslation } from "react-i18next";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
     const { showSidebar } = useAppContext();
